@@ -64,7 +64,7 @@ untouched with the manual snippet printed instead.
 
 ## What the installer does
 
-1. Adds `bootstrap`, `@popperjs/core` and `flatpickr` (and `sass` as a dev dependency) to `package.json`
+1. Adds `bootstrap`, `@popperjs/core`, `flatpickr` and `quill` (and `sass` as a dev dependency) to `package.json`
    without touching existing entries, then runs `npm install`.
 2. Writes `resources/scss/app.scss`: a documented variable-override section, the Bootstrap source import,
    and the styles the installed `wire-*` packages need.
@@ -87,6 +87,8 @@ their Alpine layer:
 // after the import that sets window.bootstrap
 import flatpickr from 'flatpickr';
 window.flatpickr = flatpickr; // only needed for <x-wb::input.date>
+import Quill from 'quill';
+window.Quill = Quill; // only needed for <x-wb::input.editor>
 import '../../vendor/rishadblack/wire-bootstrap/resources/js/wire-bootstrap.js';
 ```
 
@@ -145,6 +147,7 @@ Extra props per field:
 | `input.checkbox` / `input.switch` | `value`, `inline` |
 | `input.radio` / `input.checkbox-group` | `options`, `inline`; one error block for the group |
 | `input.date` | `date`, `time`, `format`, `min-date`, `max-date`, `inline`, `default-date`, `enable-dates`, `disable-dates`, `range` |
+| `input.editor` | rich text (Quill 2, snow theme): `toolbar` (`basic`, `full` or a Quill toolbar array), `height`, `read-only`; binds HTML through a hidden input — **sanitize before echoing with `{!! !!}`** |
 | `input.file` | `multiple`, `accept`; Livewire upload progress bar built in |
 | `input.color`, `input.range` | range: `min`, `max`, `step`, `show-value` |
 

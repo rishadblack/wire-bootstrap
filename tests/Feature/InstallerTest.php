@@ -81,7 +81,7 @@ it('adds npm dependencies without touching existing entries', function () {
 
     $package = json_decode(readApp($base, 'package.json'), true);
 
-    expect($package['dependencies'])->toHaveKeys(['bootstrap', '@popperjs/core', 'flatpickr'])
+    expect($package['dependencies'])->toHaveKeys(['bootstrap', '@popperjs/core', 'flatpickr', 'quill'])
         ->and($package['devDependencies'])->toHaveKey('sass')
         ->and($package['devDependencies']['vite'])->toBe('^8.0.0')
         ->and($package['scripts'])->toBe(['build' => 'vite build', 'dev' => 'vite']);

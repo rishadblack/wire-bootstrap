@@ -10,5 +10,9 @@ import flatpickr from 'flatpickr';
 
 window.flatpickr = flatpickr;
 
+import Quill from 'quill';
+
+window.Quill = Quill;
+
 import '../../vendor/rishadblack/wire-bootstrap/resources/js/wire-bootstrap.js';
 __WB_SIBLING_IMPORTS__

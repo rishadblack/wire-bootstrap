@@ -1,6 +1,6 @@
 ---
 name: wire-bootstrap-development
-description: Use this skill when building UI with rishadblack/wire-bootstrap. Trigger when rendering or editing <x-wire-bootstrap::*> or <x-wb::*> Blade tags (input.text, input.select, input.date, input.password, checkbox/switch/radio groups, button, card, tabs, badge, alert, empty-state, theme-toggle, layout), running or configuring php artisan wire-bootstrap:install, editing resources/scss/app.scss Bootstrap overrides or wire-bootstrap-setup.js, calling Rishadblack\WireBootstrap\Support\FieldState or Options or DateOptions, adding a custom field component on the Field foundation, configuring config/wire-bootstrap.php (alias prefix, defaults, markers, date formats, theme, blaze), integrating livewire/blaze, or testing these components with Pest.
+description: Use this skill when building UI with rishadblack/wire-bootstrap. Trigger when rendering or editing <x-wire-bootstrap::*> or <x-wb::*> Blade tags (input.text, input.select, input.date, input.editor, input.password, checkbox/switch/radio groups, button, card, tabs, badge, alert, empty-state, theme-toggle, layout), running or configuring php artisan wire-bootstrap:install, editing resources/scss/app.scss Bootstrap overrides or wire-bootstrap-setup.js, calling Rishadblack\WireBootstrap\Support\FieldState, Options, DateOptions or EditorOptions, adding a custom field component on the Field foundation, configuring config/wire-bootstrap.php (alias prefix, defaults, markers, date formats, theme, blaze), integrating livewire/blaze, or testing these components with Pest.
 ---
 
 # Wire Bootstrap Development
@@ -72,6 +72,17 @@ Accepted date spellings everywhere (`min-date`, `enable-dates`, ...): `Y-m-d`, `
 `strtotime` input. `:enable-dates="['disable_all']"` disables all dates. Runtime update from PHP:
 `$this->dispatch('wire-bootstrap:date-options', model: 'joined_at', enable: ['2026-06-25'])`.
 Display format comes from `config('wire-bootstrap.date.display_format')` (flatpickr tokens).
+
+## Rich text
+
+```blade
+<x-wb::input.editor label="Body" wire:model="body" toolbar="full" height="16rem" />
+```
+
+Quill 2 (snow) behind `wire:ignore`; the HTML binds through a hidden input, so `wire:model` works
+unchanged. `toolbar` is `basic` (default), `full` or a Quill toolbar array; `read-only` and `height`
+available. Needs `window.Quill` (the installer sets it up). The value is user HTML — sanitize before
+echoing with `{!! !!}`. Without Quill the field degrades to a plain textarea.
 
 ## Layout and theme
 

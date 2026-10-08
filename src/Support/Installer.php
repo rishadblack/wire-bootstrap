@@ -23,6 +23,7 @@ class Installer
         'bootstrap' => '^5.3.3',
         '@popperjs/core' => '^2.11.8',
         'flatpickr' => '^4.6.13',
+        'quill' => '^2.0.3',
     ];
 
     /** @var array<string, string> */

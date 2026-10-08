@@ -132,6 +132,52 @@ document.addEventListener('alpine:init', () => {
     }));
 
     /**
+     * Rich text editor (Quill). The wire:model binding lives on a hidden
+     * input; every edit writes the HTML there and re-dispatches an input
+     * event, so Livewire sees an ordinary field.
+     */
+    window.Alpine.data('wbEditor', (config) => ({
+        quill: null,
+
+        init() {
+            if (typeof window.Quill !== 'function') {
+                console.warn('[wire-bootstrap] Quill is not loaded; the editor field falls back to a plain textarea.');
+                this.$refs.fallback?.classList.remove('d-none');
+
+                return;
+            }
+
+            this.$refs.editor.classList.remove('d-none');
+
+            this.quill = new window.Quill(this.$refs.editor, {
+                theme: 'snow',
+                placeholder: config.placeholder ?? '',
+                readOnly: Boolean(config.readOnly),
+                modules: { toolbar: config.toolbar },
+            });
+
+            const initial = this.$refs.input.value;
+
+            if (initial) {
+                this.quill.clipboard.dangerouslyPasteHTML(initial);
+            }
+
+            this.quill.on('text-change', (delta, oldDelta, source) => {
+                if (source !== 'user') {
+                    return;
+                }
+
+                this.$refs.input.value = this.quill.getLength() <= 1 ? '' : this.quill.root.innerHTML;
+                this.$refs.input.dispatchEvent(new Event('input', { bubbles: true }));
+            });
+        },
+
+        destroy() {
+            this.quill = null;
+        },
+    }));
+
+    /**
      * Tabs. Pure Alpine state driving Bootstrap's nav-tabs markup; optionally
      * resets to the default tab when the surrounding wire-modals modal reopens.
      */

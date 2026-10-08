@@ -19,7 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `input.text`, `input.email`, `input.number`, `input.hidden`, `input.password` (Alpine visibility
   toggle), `input.textarea`, `input.select`, `input.select-search` (field chrome for wire-tomselect),
   `input.checkbox`, `input.switch`, `input.checkbox-group`, `input.radio`, `input.date` (flatpickr),
-  `input.file` (Livewire upload progress), `input.color`, `input.range`. Every field derives id/name/error
+  `input.editor` (Quill 2 rich text with `basic`/`full`/custom toolbars, bound through a hidden input,
+  plain-textarea fallback), `input.file` (Livewire upload progress), `input.color`, `input.range`. Every field derives id/name/error
   key from `wire:model`, renders label + markers, validation error and help text, supports `size`,
   `floating` and `prepend`/`append` input groups, and renders `aria-required` instead of the native
   `required` attribute so Livewire validation always runs.
