@@ -1,0 +1,14 @@
+// wire-bootstrap ------------------------------------------------------------
+// 1. Your Bootstrap variable overrides. They must come before Bootstrap.
+//    https://getbootstrap.com/docs/5.3/customize/sass/
+//
+// $primary: #6f42c1;
+// $enable-shadows: true;
+
+// 2. Bootstrap source (compiled by the "sass" npm package through Vite).
+@import 'bootstrap/scss/bootstrap';
+
+// 3. Styles required by the installed wire-* packages.
+@import 'flatpickr/dist/flatpickr';
+__WB_SIBLING_STYLES__
+// 4. Your own styles below.

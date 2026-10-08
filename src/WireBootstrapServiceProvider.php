@@ -2,15 +2,26 @@
 
 namespace Rishadblack\WireBootstrap;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Blaze\Blaze;
 use Rishadblack\WireBootstrap\Console\InstallCommand;
+use Rishadblack\WireBootstrap\Support\Installer;
 
 class WireBootstrapServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/wire-bootstrap.php', 'wire-bootstrap');
+
+        $this->app->bind(
+            Installer::class,
+            fn ($app): Installer => new Installer(
+                new Filesystem,
+                $app->basePath(),
+            ),
+        );
     }
 
     public function boot(): void
@@ -58,10 +69,10 @@ class WireBootstrapServiceProvider extends ServiceProvider
             return;
         }
 
-        if (! class_exists(\Livewire\Blaze\Blaze::class) || ! $this->app->bound('blaze')) {
+        if (! class_exists(Blaze::class) || ! $this->app->bound('blaze')) {
             return;
         }
 
-        \Livewire\Blaze\Blaze::optimize()->in($componentsPath);
+        Blaze::optimize()->in($componentsPath);
     }
 }
