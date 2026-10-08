@@ -35,6 +35,20 @@ const applyTheme = (theme) => {
     document.documentElement.setAttribute('data-bs-theme', resolved);
 };
 
+/**
+ * flatpickr parses string options (minDate, enable, ...) with the DISPLAY
+ * dateFormat, so server-normalised Y-m-d strings must become Date objects.
+ */
+const toDate = (value) => {
+    if (typeof value !== 'string' || ! /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        return value;
+    }
+
+    const [year, month, day] = value.split('-').map(Number);
+
+    return new Date(year, month - 1, day);
+};
+
 document.addEventListener('alpine:init', () => {
     /**
      * Date field. Mounts flatpickr on $refs.input and keeps Livewire in sync
@@ -54,15 +68,21 @@ document.addEventListener('alpine:init', () => {
 
             const options = { ...config.options };
 
+            ['minDate', 'maxDate', 'defaultDate'].forEach((key) => {
+                if (options[key] !== undefined) {
+                    options[key] = toDate(options[key]);
+                }
+            });
+
             if (config.disableAll) {
                 options.disable = [() => true];
             } else {
                 if (config.enable.length > 0) {
-                    options.enable = [...config.enable];
+                    options.enable = config.enable.map(toDate);
                 }
 
                 if (config.disable.length > 0) {
-                    options.disable = [...config.disable];
+                    options.disable = config.disable.map(toDate);
                 }
             }
 
@@ -95,11 +115,11 @@ document.addEventListener('alpine:init', () => {
                 this.picker.set('enable', []);
                 this.picker.set('disable', [() => true]);
             } else if (enable.length > 0) {
-                this.picker.set('disable', disable.length > 0 ? disable : []);
-                this.picker.set('enable', enable);
+                this.picker.set('disable', disable.length > 0 ? disable.map(toDate) : []);
+                this.picker.set('enable', enable.map(toDate));
             } else {
                 this.picker.set('enable', []);
-                this.picker.set('disable', disable.length > 0 ? disable : [() => true]);
+                this.picker.set('disable', disable.length > 0 ? disable.map(toDate) : [() => true]);
             }
 
             this.picker.redraw();

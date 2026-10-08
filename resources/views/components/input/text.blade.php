@@ -33,7 +33,7 @@
         @if ($field->id) id="{{ $field->id }}" @endif
         @if ($field->name) name="{{ $field->name }}" @endif
         @if ($field->placeholder !== null) placeholder="{{ $field->placeholder }}" @endif
-        @if ($field->required) required @endif
+        @if ($field->required) aria-required="true" @endif
         @if ($datalist) list="{{ $field->id }}-list" @endif
         {{ $attributes->class([
             'form-control',

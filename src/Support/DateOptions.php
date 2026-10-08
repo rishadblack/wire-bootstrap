@@ -56,9 +56,9 @@ class DateOptions
                 'inline' => $inline,
             ],
             $range ? ['mode' => 'range'] : [],
-            filled($props['minDate'] ?? null) ? ['minDate' => $props['minDate']] : [],
-            filled($props['maxDate'] ?? null) ? ['maxDate' => $props['maxDate']] : [],
-            filled($props['defaultDate'] ?? null) ? ['defaultDate' => $props['defaultDate']] : [],
+            filled($props['minDate'] ?? null) ? ['minDate' => self::convertDate((string) $props['minDate'])] : [],
+            filled($props['maxDate'] ?? null) ? ['maxDate' => self::convertDate((string) $props['maxDate'])] : [],
+            filled($props['defaultDate'] ?? null) ? ['defaultDate' => self::convertDate((string) $props['defaultDate'])] : [],
             (array) config('wire-bootstrap.date.flatpickr', []),
         );
 

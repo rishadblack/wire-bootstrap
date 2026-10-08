@@ -38,7 +38,7 @@
                 id="{{ $field->id }}-{{ $loop->index }}"
                 @if ($field->name) name="{{ $field->name }}{{ $checkboxGroup ? '[]' : '' }}" @endif
                 value="{{ $option['value'] }}"
-                @if ($field->required && ! $checkboxGroup) required @endif
+                @if ($field->required && ! $checkboxGroup) aria-required="true" @endif
                 {{ $attributes->class(['form-check-input', 'is-invalid' => $field->invalid]) }}
             />
             <label class="form-check-label" for="{{ $field->id }}-{{ $loop->index }}">{{ $option['label'] }}</label>

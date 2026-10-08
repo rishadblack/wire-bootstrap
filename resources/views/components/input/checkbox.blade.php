@@ -32,7 +32,7 @@
         @if ($field->id) id="{{ $field->id }}" @endif
         @if ($field->name) name="{{ $field->name }}" @endif
         @if ($value !== null) value="{{ $value }}" @endif
-        @if ($field->required) required @endif
+        @if ($field->required) aria-required="true" @endif
         {{ $attributes->class(['form-check-input', 'is-invalid' => $field->invalid]) }}
     />
     @if ($field->label)

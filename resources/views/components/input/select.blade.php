@@ -34,7 +34,7 @@
     <select
         @if ($field->id) id="{{ $field->id }}" @endif
         @if ($field->name) name="{{ $field->name }}{{ $multiple ? '[]' : '' }}" @endif
-        @if ($field->required) required @endif
+        @if ($field->required) aria-required="true" @endif
         {{ $attributes->class([
             'form-select',
             'form-select-sm' => $field->size === 'sm',

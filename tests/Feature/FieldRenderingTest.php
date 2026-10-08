@@ -38,8 +38,10 @@ it('renders required and optional markers', function () {
     $required = $this->render('<x-wire-bootstrap::input.text label="Name" wire:model="name" required />');
     $optional = $this->render('<x-wire-bootstrap::input.text label="Name" wire:model="name" optional />');
 
+    // aria-required instead of the native attribute: native HTML5 validation
+    // would block wire:submit before Livewire's server-side validation runs.
     expect($required)->toContain('<span class="text-danger">(*)</span>')
-        ->toContain('required')
+        ->toContain('aria-required="true"')
         ->and($optional)->toContain('<span class="text-muted">(Optional)</span>');
 });
 

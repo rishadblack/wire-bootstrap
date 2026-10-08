@@ -10,6 +10,7 @@ use Illuminate\View\Factory;
  * Everything a form field view needs, resolved once per field: the wire:model
  * binding, derived name and id, label markers, placeholder, size, floating
  * mode and the validation error for the field. Views call resolve() in one
+ *
  * @php line and render; no other logic lives in the Blade files.
  */
 class FieldState

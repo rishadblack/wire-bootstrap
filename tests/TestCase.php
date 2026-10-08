@@ -2,7 +2,9 @@
 
 namespace Rishadblack\WireBootstrap\Tests;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Blaze\BlazeServiceProvider;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Rishadblack\WireBootstrap\WireBootstrapServiceProvider;
@@ -16,7 +18,7 @@ abstract class TestCase extends Orchestra
     {
         return [
             LivewireServiceProvider::class,
-            \Livewire\Blaze\BlazeServiceProvider::class,
+            BlazeServiceProvider::class,
             WireBootstrapServiceProvider::class,
         ];
     }
@@ -41,6 +43,6 @@ abstract class TestCase extends Orchestra
      */
     protected function render(string $template, array $data = []): string
     {
-        return \Illuminate\Support\Facades\Blade::render($template, $data);
+        return Blade::render($template, $data);
     }
 }

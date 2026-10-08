@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
+
 it('renders email and number as typed text fields', function () {
     expect($this->render('<x-wire-bootstrap::input.email label="Email" wire:model="email" />'))
         ->toContain('type="email"')
@@ -94,8 +97,8 @@ it('renders a checkbox group with array name', function () {
 });
 
 it('shows one always-visible error block for a group', function () {
-    $errors = new \Illuminate\Support\ViewErrorBag;
-    $errors->put('default', new \Illuminate\Support\MessageBag(['plan' => ['Pick one.']]));
+    $errors = new ViewErrorBag;
+    $errors->put('default', new MessageBag(['plan' => ['Pick one.']]));
     view()->share('errors', $errors);
 
     $html = $this->render('<x-wire-bootstrap::input.radio label="Plan" wire:model="plan" :options="[\'a\' => \'A\']" />');

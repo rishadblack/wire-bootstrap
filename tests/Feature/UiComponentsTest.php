@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
+
 it('renders a button with the default variant', function () {
     expect($this->render('<x-wire-bootstrap::button>Save</x-wire-bootstrap::button>'))
         ->toContain('btn btn-primary')
@@ -108,8 +111,8 @@ it('omits the theme snippet when dark mode is disabled', function () {
 });
 
 it('wraps a custom control with field chrome in select-search', function () {
-    $errors = new \Illuminate\Support\ViewErrorBag;
-    $errors->put('default', new \Illuminate\Support\MessageBag(['city_id' => ['Pick a city.']]));
+    $errors = new ViewErrorBag;
+    $errors->put('default', new MessageBag(['city_id' => ['Pick a city.']]));
     view()->share('errors', $errors);
 
     $html = $this->render('<x-wire-bootstrap::input.select-search label="City" name="city_id" required><div class="fake-tomselect"></div></x-wire-bootstrap::input.select-search>');

@@ -38,7 +38,7 @@
             @if ($field->name) name="{{ $field->name }}{{ $multiple ? '[]' : '' }}" @endif
             @if ($multiple) multiple @endif
             @if ($accept) accept="{{ $accept }}" @endif
-            @if ($field->required) required @endif
+            @if ($field->required) aria-required="true" @endif
             {{ $attributes->class([
                 'form-control',
                 'form-control-sm' => $field->size === 'sm',

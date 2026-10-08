@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
+
 it('merges the package config', function () {
     expect(config('wire-bootstrap.alias_prefix'))->toBe('wb')
         ->and(config('wire-bootstrap.defaults.button_variant'))->toBe('primary')
@@ -7,7 +9,7 @@ it('merges the package config', function () {
 });
 
 it('registers the install command', function () {
-    expect(array_key_exists('wire-bootstrap:install', \Illuminate\Support\Facades\Artisan::all()))->toBeTrue();
+    expect(array_key_exists('wire-bootstrap:install', Artisan::all()))->toBeTrue();
 });
 
 it('loads the package translations', function () {

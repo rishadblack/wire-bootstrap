@@ -1,5 +1,18 @@
 # wire-bootstrap — build instructions for the implementing agent
 
+> **Build status (2026-10-08):** Phases 0–8 are done. The package source, installer, views, Alpine JS,
+> config, lang, Boost guideline and skill, readme, changelog and the Pest suite (92 tests) exist and pass;
+> Pint and PHPStan (level 6) are clean; the sandbox app ran the real installer, its layout/welcome pages
+> use `<x-wire-bootstrap::layout>`, and `/forms` has 4 feature + 7 browser tests, all green. Blaze
+> verified live: compiled package views contain `__blaze` functions. Deviations from the first draft:
+> fields render `aria-required` instead of the native `required` attribute (native validation blocked
+> `wire:submit` before Livewire validation — found by browser test); date strings are converted to `Date`
+> objects in JS because flatpickr parses string options with the display format; `input.select-search` is
+> field chrome around a slotted custom control (wire-tomselect) with a plain-select fallback, not a
+> `<livewire:dynamic-component>` bridge; `textarea autosize` was dropped (no CSS-only solution shipped);
+> memo/fold are not enabled on any view yet (every candidate uses slots or request state). Use the rest of
+> this file as the spec when extending the package.
+
 You are building a new Composer package, `rishadblack/wire-bootstrap`, inside this folder. It generalises
 the form/UI component layer of the Sylloo ERP Theme module (`C:\Office\sylloo-project\sylloo-erp\Modules\Theme`)
 into a reusable Laravel + Livewire package, **plus** an installer that sets up Bootstrap 5.3 (npm, SCSS,

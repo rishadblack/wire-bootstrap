@@ -26,7 +26,7 @@
         type="color"
         @if ($field->id) id="{{ $field->id }}" @endif
         @if ($field->name) name="{{ $field->name }}" @endif
-        @if ($field->required) required @endif
+        @if ($field->required) aria-required="true" @endif
         {{ $attributes->class([
             'form-control',
             'form-control-color',
