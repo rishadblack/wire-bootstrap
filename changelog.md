@@ -5,6 +5,19 @@ All notable changes to `rishadblack/wire-bootstrap` will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.1 - 2026-10-10
+
+### Added
+
+- `resources/scss/wire-bootstrap.scss` theme layer: restyles the flatpickr calendar (days, ranges, today, month and
+  year pickers, week numbers, time picker) with Bootstrap 5.3 CSS variables, so `input.date` follows light and dark
+  mode and the app's `$primary`. The installer's `app.scss` stub imports it after the vendor styles; existing apps
+  add the import by hand.
+
+### Fixed
+
+- The flatpickr calendar stayed white with dark text in dark mode.
+
 ## 1.0.0 - 2026-10-08
 
 ### Added

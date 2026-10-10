@@ -67,7 +67,10 @@ untouched with the manual snippet printed instead.
 1. Adds `bootstrap`, `@popperjs/core`, `flatpickr` and `quill` (and `sass` as a dev dependency) to `package.json`
    without touching existing entries, then runs `npm install`.
 2. Writes `resources/scss/app.scss`: a documented variable-override section, the Bootstrap source import,
-   and the styles the installed `wire-*` packages need.
+   the styles the installed `wire-*` packages need and this package's theme layer
+   (`resources/scss/wire-bootstrap.scss`), which restyles the flatpickr calendar with Bootstrap CSS variables
+   so it follows light and dark mode. Apps with an existing `app.scss` add
+   `@import '../../vendor/rishadblack/wire-bootstrap/resources/scss/wire-bootstrap';` after the vendor styles.
 3. Writes `resources/js/wire-bootstrap-setup.js` (managed — regenerated on re-runs): exposes
    `window.bootstrap` and `window.flatpickr`, imports this package's Alpine components and, when
    installed, the wire-tomselect and wire-modals scripts. A marker block in `resources/js/app.js` imports

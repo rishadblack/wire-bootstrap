@@ -12,4 +12,7 @@
 @import 'flatpickr/dist/flatpickr';
 @import 'quill/dist/quill.snow';
 __WB_SIBLING_STYLES__
-// 4. Your own styles below.
+// 4. wire-bootstrap theme layer: restyles the widgets above for light and dark mode.
+@import '../../vendor/rishadblack/wire-bootstrap/resources/scss/wire-bootstrap';
+
+// 5. Your own styles below.

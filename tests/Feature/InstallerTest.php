@@ -69,6 +69,7 @@ it('writes every file a fresh app needs', function () {
         ->and($report['manual'])->toBe([]);
 
     expect(readApp($base, 'resources/scss/app.scss'))->toContain("@import 'bootstrap/scss/bootstrap';")
+        ->toContain("@import '../../vendor/rishadblack/wire-bootstrap/resources/scss/wire-bootstrap';")
         ->and(readApp($base, 'resources/js/wire-bootstrap-setup.js'))->toContain('window.bootstrap = bootstrap')
         ->and(readApp($base, 'resources/js/app.js'))->toContain("import './wire-bootstrap-setup';")
         ->and(readApp($base, 'resources/views/components/layouts/app.blade.php'))->toContain('<x-wire-bootstrap::layout');
