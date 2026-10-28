@@ -13,6 +13,21 @@ it('renders email and number as typed text fields', function () {
         ->toContain('step="1"');
 });
 
+it('escapes a bound label and help of a wrapper field only once', function (string $tag, string $extra) {
+    $html = $this->render(
+        "<x-wire-bootstrap::{$tag} :label=\"\$label\" :help=\"\$label\" wire:model=\"field\" {$extra} />",
+        ['label' => "Owner's email"],
+    );
+
+    expect(substr_count($html, 'Owner&#039;s email'))->toBeGreaterThanOrEqual(2)
+        ->and($html)->not->toContain('&amp;#039;');
+})->with([
+    ['input.email', ''],
+    ['input.number', ''],
+    ['input.switch', ''],
+    ['input.checkbox-group', ':options="[\'a\' => \'A\']"'],
+]);
+
 it('renders a bare hidden input without field chrome', function () {
     $html = $this->render('<x-wire-bootstrap::input.hidden wire:model="token" />');
 

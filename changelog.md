@@ -5,6 +5,14 @@ All notable changes to `rishadblack/wire-bootstrap` will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.2 - 2026-10-28
+
+### Fixed
+
+- `input.email`, `input.number`, `input.switch` and `input.checkbox-group` escaped a bound label, help or placeholder
+  twice (`:label="__('…')"` with an apostrophe showed `&#039;`). The wrappers now declare the props of the field they
+  wrap and pass them on unescaped.
+
 ## 1.0.1 - 2026-10-10
 
 ### Added
