@@ -227,6 +227,8 @@ variables (light and dark mode).
 - **`badge`** — `variant`, `pill`.
 - **`alert`** — `variant`, `dismissible` (Bootstrap's `data-bs-dismiss`, no JS needed).
 - **`empty-state`** — `title`, `description`, action slot.
+- **`thumb`** — a small picture with a fallback: `src`, `alt`, `initials`, `name` (initials from the first and last word), `icon` (its full class list, e.g. `ti ti-box`), the slot; `size` `sm|md|lg` or pixels (`:size="36"`); `shape` `rounded|circle|square`. A broken image removes itself, so the fallback shows. `<x-wb::thumb :src="$product->image_url" icon="ti ti-box" size="lg" />`
+- **`avatar`** — a round `thumb` for a person: `<x-wb::avatar :src="$user->photo_url" :name="$user->name" size="sm" />` (the name is the label and gives the initials).
 - **`pin-pad`** — on-screen PIN pad bound with `wire:model`; see [Codes and PINs](#codes-and-pins).
 - **`theme-toggle`** — light/dark button (`with-auto` adds an auto step), persists in `localStorage`.
 - **`layout`** — see below.

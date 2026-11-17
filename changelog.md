@@ -5,6 +5,17 @@ All notable changes to `rishadblack/wire-bootstrap` will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.2.0 - 2026-11-17
+
+### Added
+
+- `thumb`: a small picture with a fallback. Props `src`, `alt` (labels it `role="img"`; without it the thumb is
+  hidden from screen readers), `initials`, `name` (initials from the first and last word, multibyte-safe), `icon`
+  (full class list), the slot as last fallback, `size` (`sm`, `md`, `lg` or pixels) and `shape` (`rounded`, `circle`,
+  `square`). The image covers the fallback and removes itself when it fails to load.
+- `avatar`: a round `thumb` for a person; the name is its label and gives the initials.
+- Their styles in the `wire-bootstrap.scss` theme layer (`.wb-thumb`, Bootstrap CSS variables, light and dark mode).
+
 ## 1.1.0 - 2026-11-17
 
 ### Added

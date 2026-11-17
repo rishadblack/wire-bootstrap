@@ -129,3 +129,58 @@ it('falls back to a plain select in select-search without a slot', function () {
     expect($html)->toContain('form-select')
         ->toContain('<option value="d">Dhaka</option>');
 });
+
+it('renders a thumb with an image over its icon fallback', function () {
+    $html = $this->render('<x-wire-bootstrap::thumb src="/img/box.png" icon="ti ti-box" alt="Box" />');
+
+    expect($html)->toContain('class="wb-thumb wb-thumb-md"')
+        ->toContain('role="img"')
+        ->toContain('aria-label="Box"')
+        ->toContain('<i class="ti ti-box"></i>')
+        ->toContain('<img src="/img/box.png" alt="" loading="lazy" onerror="this.remove()">');
+});
+
+it('hides a thumb without alt text from screen readers and draws no image without src', function () {
+    $html = $this->render('<x-wire-bootstrap::thumb icon="ti ti-photo" />');
+
+    expect($html)->toContain('aria-hidden="true"')
+        ->not->toContain('<img')
+        ->not->toContain('role="img"');
+});
+
+it('sizes a thumb by name or in pixels and shapes it', function () {
+    expect($this->render('<x-wire-bootstrap::thumb size="sm" shape="square" />'))
+        ->toContain('class="wb-thumb wb-thumb-sm wb-thumb-square"');
+
+    expect($this->render('<x-wire-bootstrap::thumb :size="36" />'))
+        ->toContain('class="wb-thumb"')
+        ->toContain('style="--wb-thumb-size: 36px"');
+});
+
+it('shows initials before the icon, and the slot when there is neither', function () {
+    expect($this->render('<x-wire-bootstrap::thumb initials="AB" icon="ti ti-box" />'))
+        ->toContain('<span class="wb-thumb-initials">AB</span>')
+        ->not->toContain('ti-box');
+
+    expect($this->render('<x-wire-bootstrap::thumb><b>?</b></x-wire-bootstrap::thumb>'))
+        ->toContain('<b>?</b>');
+});
+
+it('renders a round avatar with the initials of the first and last name', function () {
+    $html = $this->render('<x-wire-bootstrap::avatar name="rahim uddin khan" src="/p.jpg" size="sm" class="me-2" />');
+
+    expect($html)->toContain('wb-thumb wb-thumb-sm wb-thumb-circle')
+        ->toContain('me-2')
+        ->toContain('aria-label="rahim uddin khan"')
+        ->toContain('<span class="wb-thumb-initials">RK</span>')
+        ->toContain('<img src="/p.jpg"');
+});
+
+it('takes initials from a Bangla name and escapes the name', function () {
+    expect($this->render('<x-wire-bootstrap::avatar name="রহিম করিম" />'))
+        ->toContain('<span class="wb-thumb-initials">রক</span>');
+
+    expect($this->render('<x-wire-bootstrap::avatar name="Ann <script>" />'))
+        ->toContain('aria-label="Ann &lt;script&gt;"')
+        ->not->toContain('<script>');
+});
