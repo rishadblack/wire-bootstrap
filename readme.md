@@ -69,7 +69,7 @@ untouched with the manual snippet printed instead.
 2. Writes `resources/scss/app.scss`: a documented variable-override section, the Bootstrap source import,
    the styles the installed `wire-*` packages need and this package's theme layer
    (`resources/scss/wire-bootstrap.scss`), which restyles the flatpickr calendar with Bootstrap CSS variables
-   so it follows light and dark mode. Apps with an existing `app.scss` add
+   so it follows light and dark mode, and styles the code boxes and the PIN pad. Apps with an existing `app.scss` add
    `@import '../../vendor/rishadblack/wire-bootstrap/resources/scss/wire-bootstrap';` after the vendor styles.
 3. Writes `resources/js/wire-bootstrap-setup.js` (managed — regenerated on re-runs): exposes
    `window.bootstrap` and `window.flatpickr`, imports this package's Alpine components and, when
@@ -153,6 +153,7 @@ Extra props per field:
 | `input.editor` | rich text (Quill 2, snow theme): `toolbar` (`basic`, `full` or a Quill toolbar array), `height`, `read-only`; binds HTML through a hidden input — **sanitize before echoing with `{!! !!}`** |
 | `input.file` | `multiple`, `accept`; Livewire upload progress bar built in |
 | `input.color`, `input.range` | range: `min`, `max`, `step`, `show-value` |
+| `input.code` | grouped code boxes: `groups` (count, or a list of lengths like `[3, 3, 4]`), `length` (characters per group), `separator`, `formatted`, `alphanumeric`, `disabled`, `autofocus` — see [Codes and PINs](#codes-and-pins) |
 
 Any other attribute (`wire:model` modifiers, `data-*`, `maxlength`, `disabled`, `readonly`, …) passes
 through to the control element, with `class` merged.
@@ -168,6 +169,52 @@ component:
 $this->dispatch('wire-bootstrap:date-options', model: 'joined_at', enable: ['2026-06-25', '2026-06-26']);
 ```
 
+### Codes and PINs
+
+**`input.code`** — a code typed in groups, one box per group:
+
+```blade
+<x-wb::input.code label="Licence key" wire:model="licence" />               {{-- 1234-5678-9012-3456 --}}
+<x-wb::input.code label="Phone" wire:model="phone" :groups="[3, 3, 4]" separator=" " />
+<x-wb::input.code label="Voucher" wire:model="voucher" groups="3" length="5" alphanumeric formatted />
+```
+
+Typing moves on to the next box, Backspace in an empty box goes back, the arrow keys move between boxes,
+and a pasted code fills every box — with or without separators. Only digits are accepted (`alphanumeric`
+also allows letters, upper-cased). `wire:model` receives the plain value (`1234567890123456`); with
+`formatted` it receives the separated one (`1234-5678-9012-3456`). A value set from the server is spread
+over the boxes either way. Defaults (4 × 4, `-`) come from `config('wire-bootstrap.code')`. The boxes
+always read left to right, also in RTL layouts; each box has an `aria-label` ("Licence key, part 2 of 4")
+and the label points at the first box.
+
+**`pin-pad`** — an on-screen PIN pad: masked dots, digit keys, a delete key and OK.
+
+```blade
+<x-wb::pin-pad label="Enter your PIN" wire:model="pin" submit="unlock" />
+```
+
+| Prop | Default | Meaning |
+|---|---|---|
+| `min` / `max` | `4` / `6` (config `pin_pad`) | shortest and longest PIN (1–12) |
+| `submit` | — | Livewire method called on OK / Enter, and when `max` digits are in |
+| `auto-submit` | `true` | submit by itself at `max` digits |
+| `disabled` | `false` | keys and keyboard off |
+| `global-keys` | `false` | listen to the keyboard on the whole page (lock screens), not only while the pad has focus |
+| `autofocus` | `false` | focus the pad on load so typing works at once |
+| `label`, `name`, `id`, `help`, `size` | | as for every field (`size` `sm` / `lg` scales the keys) |
+
+`wire:model` receives the digits. The keyboard works too: digits, Backspace, Enter, Escape clears. OK stays
+inactive until `min` digits are in. Submitting dispatches a `wb-pin-submit` browser event (`detail.value`)
+— listen with `x-on:wb-pin-submit` instead of `submit` when you need custom JavaScript — and the keys stay
+locked while the `submit` call runs. A validation error on the model shows below the dots and turns them
+red; clear the property on the server (`$this->reset('pin')`) after a wrong PIN. The pad is a labelled
+`role="group"` that announces "3 of 6 digits entered" to screen readers; global keys ignore other inputs on
+the page and stay quiet while the pad is hidden (for example in a closed wire-modals modal).
+
+Both components bind through Alpine's `x-modelable`, so every `wire:model` modifier works (`.live`,
+`.blur`, …), and both are styled by the package's `wire-bootstrap.scss` theme layer with Bootstrap CSS
+variables (light and dark mode).
+
 ## Components
 
 - **`button`** — `variant` (default from config), `outline`, `size`, `icon` (class string), `type`
@@ -180,6 +227,7 @@ $this->dispatch('wire-bootstrap:date-options', model: 'joined_at', enable: ['202
 - **`badge`** — `variant`, `pill`.
 - **`alert`** — `variant`, `dismissible` (Bootstrap's `data-bs-dismiss`, no JS needed).
 - **`empty-state`** — `title`, `description`, action slot.
+- **`pin-pad`** — on-screen PIN pad bound with `wire:model`; see [Codes and PINs](#codes-and-pins).
 - **`theme-toggle`** — light/dark button (`with-auto` adds an auto step), persists in `localStorage`.
 - **`layout`** — see below.
 
@@ -224,6 +272,8 @@ component here is an anonymous component specifically so Blaze can compile it. V
 | `markers.required` / `markers.optional` | `true` | label markers |
 | `date.display_format` / `display_format_time` | `d-M-Y` / `d-M-Y h:i K` | flatpickr display formats |
 | `date.flatpickr` | `[]` | extra options merged into every picker |
+| `code.groups` / `code.length` / `code.separator` | `4` / `4` / `-` | `input.code` defaults |
+| `pin_pad.min` / `pin_pad.max` | `4` / `6` | `pin-pad` PIN length bounds |
 | `theme.dark_mode` | `true` | theme toggle + pre-paint snippet |
 | `theme.default` | `light` | `light` / `dark` / `auto` |
 | `blaze` | `true` | auto-opt views into Blaze when installed |

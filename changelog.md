@@ -5,6 +5,30 @@ All notable changes to `rishadblack/wire-bootstrap` will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.1.0 - 2026-11-17
+
+### Added
+
+- `input.code`: a grouped code field — one box per group (default 4 × 4, `1234-5678-9012-3456`). Props `groups`
+  (a count or a list of lengths such as `[3, 3, 4]`), `length`, `separator`, `formatted`, `alphanumeric`,
+  `disabled`, `autofocus` plus the common field props. Typing moves on to the next box, Backspace in an empty
+  box goes back, arrow keys move between boxes, and a paste with or without separators fills every box.
+  Digits only unless `alphanumeric`. `wire:model` receives the plain value (or the separated one with
+  `formatted`) through Alpine `x-modelable`. Labelled `role="group"` with a per-box `aria-label`, always
+  left to right (RTL-safe).
+- `pin-pad`: an on-screen PIN pad — masked dots, digit keys, delete and OK, plus keyboard input (digits,
+  Backspace, Enter, Escape) while focused or page-wide with `global-keys`. Props `min`/`max` (4–6 by
+  default), `submit` (a Livewire method called on OK / Enter / reaching `max`), `auto-submit`, `disabled`,
+  `autofocus`, `size`, `label`, `name`, `id`, `help`. Every submit dispatches a `wb-pin-submit` browser
+  event; keys lock while the `submit` call runs; a validation error turns the dots red and is announced.
+- Alpine components `wbCode` and `wbPinPad` in `resources/js/wire-bootstrap.js`; their styles in the
+  `wire-bootstrap.scss` theme layer (Bootstrap CSS variables, light and dark mode). Apps that imported the
+  theme layer and the package JS need only `npm run build`.
+- `Support\CodeOptions` (group lengths, code mount data, PIN bounds), config sections `code` (`groups`,
+  `length`, `separator`) and `pin_pad` (`min`, `max`), and lang lines `code_label`, `code_group`,
+  `pin_label`, `pin_entered`, `pin_erase`, `pin_submit` (a published lang file keeps working: missing keys
+  fall back to the package's lines).
+
 ## 1.0.2 - 2026-10-28
 
 ### Fixed

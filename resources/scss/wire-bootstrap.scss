@@ -229,3 +229,178 @@ span.flatpickr-weekday {
         border-top-color: var(--bs-body-color);
     }
 }
+
+// Grouped code field (input.code) ---------------------------------------------
+// The groups always read left to right (the container is dir="ltr"), so a code
+// looks the same in RTL layouts. Boxes share the row in proportion to their length.
+.wb-code {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wb-code-group {
+    flex: var(--wb-code-length, 4) 1 0;
+    min-width: 0;
+    max-width: calc(var(--wb-code-length, 4) * 1.15em + 2rem);
+    text-align: center;
+    font-family: var(--bs-font-monospace);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.15em;
+}
+
+.wb-code-separator {
+    flex: none;
+    color: var(--bs-secondary-color);
+    user-select: none;
+}
+
+// PIN pad (pin-pad) ------------------------------------------------------------
+.wb-pin-pad {
+    --wb-pin-key-size: 4.25rem;
+    --wb-pin-key-font-size: 1.5rem;
+    --wb-pin-dot-size: 0.875rem;
+    --wb-pin-gap: 0.75rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    border-radius: var(--bs-border-radius-lg);
+
+    &:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 var(--bs-focus-ring-width, 0.25rem) var(--bs-focus-ring-color, rgba(var(--bs-primary-rgb), 0.25));
+    }
+}
+
+.wb-pin-pad-sm {
+    --wb-pin-key-size: 3.25rem;
+    --wb-pin-key-font-size: 1.25rem;
+    --wb-pin-dot-size: 0.75rem;
+    --wb-pin-gap: 0.5rem;
+}
+
+.wb-pin-pad-lg {
+    --wb-pin-key-size: 5.25rem;
+    --wb-pin-key-font-size: 1.75rem;
+    --wb-pin-dot-size: 1rem;
+    --wb-pin-gap: 1rem;
+}
+
+.wb-pin-label {
+    font-weight: 500;
+    text-align: center;
+}
+
+.wb-pin-dots {
+    display: flex;
+    gap: 0.75rem;
+    min-height: var(--wb-pin-dot-size);
+}
+
+.wb-pin-dot {
+    width: var(--wb-pin-dot-size);
+    height: var(--wb-pin-dot-size);
+    border: 2px solid var(--bs-secondary-color);
+    border-radius: 50%;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+
+    &.is-filled {
+        background-color: var(--bs-emphasis-color);
+        border-color: var(--bs-emphasis-color);
+    }
+}
+
+.wb-pin-pad.is-invalid .wb-pin-dot {
+    border-color: var(--bs-form-invalid-border-color);
+
+    &.is-filled {
+        background-color: var(--bs-form-invalid-color);
+    }
+}
+
+.wb-pin-error {
+    margin-top: 0;
+    text-align: center;
+}
+
+.wb-pin-keys {
+    display: grid;
+    grid-template-columns: repeat(3, var(--wb-pin-key-size));
+    gap: var(--wb-pin-gap);
+}
+
+.wb-pin-key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--wb-pin-key-size);
+    height: var(--wb-pin-key-size);
+    padding: 0;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: 50%;
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-size: var(--wb-pin-key-font-size);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    touch-action: manipulation;
+    user-select: none;
+    transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:hover {
+        background-color: var(--bs-tertiary-bg);
+    }
+
+    &:active {
+        background-color: var(--bs-secondary-bg);
+    }
+
+    &:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 var(--bs-focus-ring-width, 0.25rem) var(--bs-focus-ring-color, rgba(var(--bs-primary-rgb), 0.25));
+    }
+
+    &:disabled,
+    &[aria-disabled='true'] {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &:disabled:hover,
+    &[aria-disabled='true']:hover {
+        background-color: var(--bs-body-bg);
+    }
+}
+
+.wb-pin-key-action {
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--bs-secondary-color);
+}
+
+.wb-pin-key-submit {
+    border-color: var(--bs-primary);
+    background-color: var(--bs-primary);
+    color: #fff;
+
+    &:hover,
+    &:active,
+    &:disabled:hover,
+    &[aria-disabled='true']:hover {
+        background-color: var(--bs-primary);
+    }
+
+    &:hover:not(:disabled):not([aria-disabled='true']) {
+        filter: brightness(0.9);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wb-pin-dot,
+    .wb-pin-key {
+        transition: none;
+    }
+}

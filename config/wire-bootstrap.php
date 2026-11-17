@@ -68,6 +68,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Grouped code field and PIN pad
+    |--------------------------------------------------------------------------
+    |
+    | input.code: how many groups, characters per group and the separator
+    | shown between them (1234-5678-9012-3456). pin-pad: the shortest and
+    | longest PIN. Every tag can override these with its own props.
+    |
+    */
+
+    'code' => [
+        'groups' => 4,
+        'length' => 4,
+        'separator' => '-',
+    ],
+
+    'pin_pad' => [
+        'min' => 4,
+        'max' => 6,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Theme (dark mode)
     |--------------------------------------------------------------------------
     |

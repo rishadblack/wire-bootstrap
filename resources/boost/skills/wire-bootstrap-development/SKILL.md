@@ -1,6 +1,6 @@
 ---
 name: wire-bootstrap-development
-description: Use this skill when building UI with rishadblack/wire-bootstrap. Trigger when rendering or editing <x-wire-bootstrap::*> or <x-wb::*> Blade tags (input.text, input.select, input.date, input.editor, input.password, checkbox/switch/radio groups, button, card, tabs, badge, alert, empty-state, theme-toggle, layout), running or configuring php artisan wire-bootstrap:install, editing resources/scss/app.scss Bootstrap overrides or wire-bootstrap-setup.js, calling Rishadblack\WireBootstrap\Support\FieldState, Options, DateOptions or EditorOptions, adding a custom field component on the Field foundation, configuring config/wire-bootstrap.php (alias prefix, defaults, markers, date formats, theme, blaze), integrating livewire/blaze, or testing these components with Pest.
+description: Use this skill when building UI with rishadblack/wire-bootstrap. Trigger when rendering or editing <x-wire-bootstrap::*> or <x-wb::*> Blade tags (input.text, input.select, input.date, input.editor, input.password, input.code grouped code fields, pin-pad PIN entry, checkbox/switch/radio groups, button, card, tabs, badge, alert, empty-state, theme-toggle, layout), running or configuring php artisan wire-bootstrap:install, editing resources/scss/app.scss Bootstrap overrides or wire-bootstrap-setup.js, calling Rishadblack\WireBootstrap\Support\FieldState, Options, DateOptions, EditorOptions or CodeOptions, adding a custom field component on the Field foundation, configuring config/wire-bootstrap.php (alias prefix, defaults, markers, date formats, code, pin_pad, theme, blaze), integrating livewire/blaze, or testing these components with Pest.
 ---
 
 # Wire Bootstrap Development
@@ -84,6 +84,30 @@ unchanged. `toolbar` is `basic` (default), `full` or a Quill toolbar array; `rea
 available. Needs `window.Quill` (the installer sets it up). The value is user HTML — sanitize before
 echoing with `{!! !!}`. Without Quill the field degrades to a plain textarea.
 
+## Codes and PINs
+
+```blade
+<x-wb::input.code label="Licence key" wire:model="licence" />                 {{-- 4 boxes of 4 digits --}}
+<x-wb::input.code label="Phone" wire:model="phone" :groups="[3, 3, 4]" separator=" " />
+<x-wb::pin-pad label="Enter your PIN" wire:model="pin" min="4" max="6" submit="unlock" />
+```
+
+- `input.code`: one box per group; `groups` is a count or a list of lengths, `length` the characters per
+  group, `separator` the mark between boxes (defaults from `config('wire-bootstrap.code')`). Digits only
+  (`alphanumeric` allows upper-cased letters). Typing auto-advances, Backspace goes back, a paste with or
+  without separators fills every box. `wire:model` gets the plain value; `formatted` binds
+  `1234-5678-...` instead. Validate the length in PHP (`'digits:16'` or `'size:19'` when formatted).
+- `pin-pad`: masked dots, keys 1–9/0, delete, OK; keyboard digits/Backspace/Enter/Escape while the pad has
+  focus (`global-keys` for the whole page, e.g. a lock screen; ignored while hidden or typing elsewhere).
+  `wire:model` gets the digits. OK/Enter submits at `min`+ digits, `max` digits submit by itself
+  (`:auto-submit="false"` to stop). `submit="method"` calls that Livewire method; every submit also
+  dispatches the `wb-pin-submit` browser event (`detail.value`). Props: `min`/`max` (config `pin_pad`),
+  `disabled`, `autofocus`, `size`, `label`, `help`. On a wrong PIN add an error and `$this->reset('pin')`:
+  the dots turn red and the message shows with `role="alert"`.
+- Both bind through Alpine `x-modelable` on the component root (all `wire:model` modifiers work); a
+  `name` adds a hidden input for plain form posts. Behaviour is the `wbCode` / `wbPinPad` Alpine
+  components in the package JS; styles are in the package `wire-bootstrap.scss` theme layer.
+
 ## Layout and theme
 
 Published layout wraps `<x-wire-bootstrap::layout>` (slots: `nav`, `footer`, `head`, `scripts`; stacks
@@ -95,7 +119,7 @@ single inline script) prevents the theme flash and renders only when `theme.dark
 
 - Bootstrap `data-bs-*` + Alpine only: no jQuery, no loose `<script>` or DOM listeners outside Alpine.
 - Components are anonymous with full `@props` contracts; logic lives in `Support\FieldState`,
-  `Support\Options`, `Support\DateOptions` — never read `$attributes['foo']` as a prop in a view.
+  `Support\Options`, `Support\DateOptions`, `Support\EditorOptions`, `Support\CodeOptions` — never read `$attributes['foo']` as a prop in a view.
 - New custom field: `@props` + `FieldState::resolve($attributes, [...], $__env)` +
   `<x-wire-bootstrap::field :field="$field">` around your control, control classes via
   `$attributes->class([...])` with `'is-invalid' => $field->invalid`.
@@ -125,3 +149,6 @@ Browser checks: flatpickr instance lives on the input (`el._flatpickr`); set dat
 - Error not showing on a custom control → pass `name="property"` to `input.select-search` (error key).
 - Sass `@import` deprecation noise → the installer's `vite.config.js` css block silences it.
 - Theme flashes → `theme.dark_mode` must be on so the layout renders the pre-paint snippet.
+- Code boxes or PIN keys unstyled → the app's `app.scss` must import the package `wire-bootstrap.scss`
+  theme layer (the installer stub does); keys do nothing → the package JS (`wbCode`/`wbPinPad`) is not
+  imported or not rebuilt.
