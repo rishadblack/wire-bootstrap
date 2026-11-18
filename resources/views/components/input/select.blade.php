@@ -12,6 +12,7 @@
     'prepend' => null,
     'append' => null,
     'options' => null,
+    'rows' => null,
 ])
 
 @php($field = \Rishadblack\WireBootstrap\Support\FieldState::resolve($attributes, [
@@ -35,6 +36,7 @@
         @if ($field->id) id="{{ $field->id }}" @endif
         @if ($field->name) name="{{ $field->name }}{{ $multiple ? '[]' : '' }}" @endif
         @if ($field->required) aria-required="true" @endif
+        @if (filled($rows) && (int) $rows > 0) size="{{ (int) $rows }}" @endif
         {{ $attributes->class([
             'form-select',
             'form-select-sm' => $field->size === 'sm',

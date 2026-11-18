@@ -67,6 +67,15 @@ it('prefers slot options over none and keeps them raw', function () {
     expect($html)->toContain('<option value="a">A</option>');
 });
 
+it('shows the given rows of a list box and keeps size for the control size', function () {
+    $html = $this->render('<x-wire-bootstrap::input.select label="Tags" wire:model="tags" multiple rows="4" size="sm" :options="[\'a\' => \'A\']" />');
+
+    expect($html)->toContain('size="4"')
+        ->and($html)->toContain('form-select-sm');
+
+    expect($this->render('<x-wire-bootstrap::input.select wire:model="x" :options="[\'a\' => \'A\']" />'))->not->toContain('size="');
+});
+
 it('drops the placeholder option and appends [] to the name on multiple selects', function () {
     $html = $this->render('<x-wire-bootstrap::input.select label="Tags" wire:model="tags" multiple :options="[\'a\' => \'A\']" />');
 

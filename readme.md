@@ -145,7 +145,7 @@ Extra props per field:
 | `input.email`, `input.number`, `input.hidden` | thin variants of text (`min`/`max`/`step` pass through as attributes) |
 | `input.password` | `toggle` (eye button, default on) |
 | `input.textarea` | `rows` |
-| `input.select` | `options` (`key => label` or `[['value' => ..., 'name' => ...]]`), `<option>` slot, `multiple` (drops the placeholder, appends `[]` to the name) |
+| `input.select` | `options` (`key => label` or `[['value' => ..., 'name' => ...]]`), `<option>` slot, `multiple` (drops the placeholder, appends `[]` to the name), `rows` (the HTML `size`: visible rows of a list box; `size` stays the control size `sm` / `lg`) |
 | `input.select-search` | field chrome around a custom control in the slot (wire-tomselect), plain select fallback without one |
 | `input.checkbox` / `input.switch` | `value`, `inline` |
 | `input.radio` / `input.checkbox-group` | `options`, `inline`; one error block for the group |
